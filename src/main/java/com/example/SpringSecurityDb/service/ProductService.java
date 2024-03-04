@@ -44,10 +44,6 @@ public class ProductService {
         repository.save(user);
         return "user addeed";
     }
-    public Product deleteProduct(Product product){
-        productList.remove(product);
-        return product;
-    }
 
     public User deleteUser(User user){
         User u = repository.findById(user.getId()).orElseThrow();
