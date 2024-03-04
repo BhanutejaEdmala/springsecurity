@@ -4,7 +4,9 @@ import com.example.SpringSecurityDb.entity.Product;
 import com.example.SpringSecurityDb.entity.User;
 import com.example.SpringSecurityDb.repository.UserRepository;
 import jakarta.annotation.PostConstruct;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Service
+@Transactional
 public class ProductService {
 
     List<Product> productList = null;
@@ -49,5 +52,25 @@ public class ProductService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         repository.save(user);
         return "user addeed";
+    }
+    public Product deleteProduct(Product product){
+        productList.remove(product);
+        return product;
+    }
+
+    public User deleteUser(User user){
+        User u = repository.findById(user.getId()).orElseThrow();
+        System.out.println("hi");
+        repository.delete(u);
+        return user;
+    }
+    @Modifying
+    public User updateUser(User user){
+       if(repository.existsById(user.getId())){
+           user.setPassword(passwordEncoder.encode(user.getPassword()));
+           repository.save(user);
+           return user;
+       }
+       return null;
     }
 }

@@ -4,7 +4,6 @@ import com.example.SpringSecurityDb.entity.Product;
 import com.example.SpringSecurityDb.entity.User;
 import com.example.SpringSecurityDb.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,17 +17,26 @@ public class Controller {
         return "Welcome this endpoint is not secure";
     }
     @PostMapping("/new")
-    public String addNewUser(@RequestBody User user){
+    //@PreAuthorize("hasAuthority('ROLE_user')")
+    public String addNewUser(@RequestBody User user) {
         return service.addUser(user);
     }
     @GetMapping("/all")
-    @PreAuthorize("hasAuthority('ROLE_admin')")
+    //  @PreAuthorize("hasAuthority('ROLE_admin')")
     public List<Product> getAllTheProducts() {
         return service.getProducts();
     }
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('ROLE_user')")
+    //@PreAuthorize("hasAuthority('ROLE_user')")
     public Product getProductById(@PathVariable int id) {
         return service.getProduct(id);
+    }
+    @DeleteMapping("/del")
+    public User deleteProduct(@RequestBody User user) {
+        return service.deleteUser(user);
+    }
+    @PutMapping("/upd")
+    public  User updateUser(@RequestBody User user){
+        return service.updateUser(user);
     }
 }
