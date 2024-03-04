@@ -27,16 +27,7 @@ public class ProductService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @PostConstruct
-    public void loadProductsFromDB() {
-        productList = IntStream.rangeClosed(1, 100)
-                .mapToObj(i -> Product.builder()
-                        .productId(i)
-                        .name("product " + i)
-                        .qty(new Random().nextInt(10))
-                        .price(new Random().nextInt(5000)).build()
-                ).collect(Collectors.toList());
-    }
+
     public List<Product> getProducts() {
         return productList;
     }
